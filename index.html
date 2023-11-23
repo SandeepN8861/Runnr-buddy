@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Runnr Buddy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px;
+            display: block;
+            width: 100%;
+        }
+
+        .signin-container,
+        .register-container,
+        .kyc-container,
+        .confirm-pass-container,
+        .mobile-verification-container,
+        .verification-code-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            display: none;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Front Page -->
+    <div class="container">
+        <h1>Runnr Buddy</h1>
+        <button onclick="signIn()">Sign In</button>
+        <button onclick="register()">Register</button>
+    </div>
+
+    <!-- Sign In Page -->
+    <div class="signin-container">
+        <h2>Runnr Buddy - Sign In</h2>
+        <form>
+            <input type="tel" placeholder="Mobile Number" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Sign In</button>
+        </form>
+        <p><a href="#">Forgot Password?</a></p>
+        <div class="signup-link">
+            <p>Don't have an account? <a href="#" onclick="showRegister()">Sign Up Here</a></p>
+        </div>
+    </div>
+
+    <!-- Registration Page -->
+    <div class="register-container">
+        <h2>Runnr Buddy - Register</h2>
+        <form>
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Email" required>
+            <input type="tel" placeholder="Mobile Number" required>
+            <button type="button" onclick="proceedToKYC()">Proceed</button>
+        </form>
+    </div>
+
+    <!-- KYC Details Page -->
+    <div class="kyc-container">
+        <h2>Runnr Buddy - KYC Details</h2>
+        <form>
+            <input type="text" placeholder="Aadhar Number" required>
+            <input type="text" placeholder="Bank Name" required>
+            <input type="text" placeholder="Account Number" required>
+            <input type="text" placeholder="IFSC Code" required>
+            <input type="text" placeholder="PAN" required>
+            <button type="button" onclick="proceedToConfirmPass()">Proceed</button>
+        </form>
+    </div>
+
+    <!-- Confirm Password Page -->
+    <div class="confirm-pass-container">
+        <h2>Runnr Buddy - Confirm Password</h2>
+        <form onsubmit="handleConfirmPassword(event)">
+            <input type="password" placeholder="Choose Password" required>
+            <input type="password" placeholder="Confirm Password" required>
+            <button type="submit">Proceed</button>
+        </form>
+    </div>
+
+    <!-- Mobile Verification Page -->
+    <div class="mobile-verification-container">
+        <h2>Runnr Buddy - Mobile Verification</h2>
+        <form onsubmit="handleMobileVerification(event)">
+            <input type="tel" placeholder="Mobile Number" required>
+            <button type="button" onclick="sendOTP()">Send OTP</button>
+        </form>
+    </div>
+
+    <!-- Verification Code Page -->
+    <div class="verification-code-container">
+        <h2>Runnr Buddy - Verification Code</h2>
+        <p>Enter OTP sent to: <span id="otpRecipient"></span></p>
+       
+        <form onsubmit="handleVerificationCode(event)">
+            <input type="text" placeholder="Enter Verification Code" required>
+            <button type="submit">Verify</button>
+        </form>
+        <button onclick="changeNumber()">Change Number</button>
+        
+        <p>If you did not receive the OTP, <a href="#" onclick="resendOTP()">Resend OTP</a>.</p>
+    </div>
+
+    <script>
+        function signIn() {
+            // Toggle display of the sign-in, registration, KYC, Confirm Password, Mobile Verification, and Verification Code containers
+            document.querySelector('.container').style.display = 'none';
+            document.querySelector('.signin-container').style.display = 'block';
+            document.querySelector('.register-container').style.display = 'none';
+            document.querySelector('.kyc-container').style.display = 'none';
+            document.querySelector('.confirm-pass-container').style.display = 'none';
+            document.querySelector('.mobile-verification-container').style.display = 'none';
+            document.querySelector('.verification-code-container').style.display = 'none';
+        }
+
+        function register() {
+            // Toggle display of the sign-in, registration, KYC, Confirm Password, Mobile Verification, and Verification Code containers
+            document.querySelector('.container').style.display = 'none';
+            document.querySelector('.signin-container').style.display = 'none';
+            document.querySelector('.register-container').style.display = 'block';
+            document.querySelector('.kyc-container').style.display = 'none';
+            document.querySelector('.confirm-pass-container').style.display = 'none';
+            document.querySelector('.mobile-verification-container').style.display = 'none';
+            document.querySelector('.verification-code-container').style.display = 'none';
+        }
+
+        function proceedToKYC() {
+            // Toggle display of the KYC container
+            document.querySelector('.register-container').style.display = 'none';
+            document.querySelector('.kyc-container').style.display = 'block';
+            document.querySelector('.confirm-pass-container').style.display = 'none';
+            document.querySelector('.mobile-verification-container').style.display = 'none';
+            document.querySelector('.verification-code-container').style.display = 'none';
+        }
+
+        function proceedToConfirmPass() {
+            // Toggle display of the Confirm Password container
+            document.querySelector('.register-container').style.display = 'none';
+            document.querySelector('.kyc-container').style.display = 'none';
+            document.querySelector('.confirm-pass-container').style.display = 'block';
+            document.querySelector('.mobile-verification-container').style.display = 'none';
+            document.querySelector('.verification-code-container').style.display = 'none';
+        }
+
+        function handleConfirmPassword(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Add your logic to handle the Confirm Password form submission
+            // For example, you can transition to the Mobile Verification page
+            proceedToMobileVerification();
+        }
+
+        function proceedToMobileVerification() {
+            // Toggle display of the Mobile Verification container
+            document.querySelector('.register-container').style.display = 'none';
+            document.querySelector('.kyc-container').style.display = 'none';
+            document.querySelector('.confirm-pass-container').style.display = 'none';
+            document.querySelector('.mobile-verification-container').style.display = 'block';
+            document.querySelector('.verification-code-container').style.display = 'none';
+        }
+
+        function handleMobileVerification(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Add your logic to handle the Mobile Verification form submission
+            // For example, you can transition to the Verification Code page
+            proceedToVerificationCode();
+        }
+
+        function sendOTP() {
+            // Add your logic to send OTP
+            const mobileNumber = document.querySelector('.mobile-verification-container input[type="tel"]').value;
+            document.getElementById('otpRecipient').textContent = mobileNumber;
+            alert('OTP sent successfully!');
+            // After sending OTP, proceed to the Verification Code page
+            proceedToVerificationCode();
+        }
+
+        function proceedToVerificationCode() {
+            // Toggle display of the Verification Code container
+            document.querySelector('.mobile-verification-container').style.display = 'none';
+            document.querySelector('.verification-code-container').style.display = 'block';
+        }
+
+        function handleVerificationCode(event) {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Add your logic to handle the Verification Code form submission
+            alert("Verification Code submitted successfully!");
+            // You can proceed to the next step after code verification
+        }
+
+        function changeNumber() {
+            // Toggle display of the Mobile Verification container
+            document.querySelector('.mobile-verification-container').style.display = 'block';
+            document.querySelector('.verification-code-container').style.display = 'none';
+        }
+
+        function resendOTP() {
+            // Add your logic to resend OTP
+            alert('OTP resent successfully!');
+        }
+    </script>
+</body>
+</html>
